@@ -1,3 +1,5 @@
+import { default as idbKeyVal } from 'idb-keyval'
+
 export default {
     methods: {
         // local storage
@@ -18,12 +20,12 @@ export default {
 
         // cache
         cacheResponse(value) {
-            return localforage.setItem(this.cacheName, value).catch((err) => {
-                console.warn('localforage.setItem', err)
+            return idbKeyVal.set(this.cacheName, value).catch((err) => {
+                console.warn('cacheStore.setItem', err)
             })
         },
         getCachedResponse() {
-            return localforage.getItem(this.cacheName)
+            return idbKeyVal.get(this.cacheName)
         },
         removeCachedResponse(destination = null) {
             let cacheName = this.cacheName
@@ -43,17 +45,17 @@ export default {
                 : [cacheName]
 
             items.forEach((one) => {
-                return localforage.removeItem(one).then(() => {
-                    console.log(`${one} cache is cleared!`)
+                return idbKeyVal.delete(one).then(() => {
+                    console.log(`${one} ${this.trans('clear_cache')}`)
                 }).catch((err) => {
-                    console.warn('localforage.removeItem', err)
+                    console.warn('cacheStore.removeItem', err)
                 })
             })
         },
         clearCache(showNotif = true) {
-            localforage.clear().then(() => {
+            idbKeyVal.clear().then(() => {
                 if (showNotif) {
-                    this.showNotif('Cache Cleared')
+                    this.showNotif(this.trans('clear_cache'))
                 }
 
                 setTimeout(() => {

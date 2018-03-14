@@ -37,14 +37,6 @@ axios.defaults.headers.common = {
 }
 axios.interceptors.response.use((response) => {return response}, (error) => {return Promise.reject(error.response)})
 
-// storage
-window.localforage = require('./packages/localforage.min.js')
-localforage.config({
-    name: 'ctf0-Media_Manager',
-    storeName: 'cached',
-    description: 'laravel-media-manager cache store'
-})
-
 // vue-awesome
 require('./modules/icons')
 Vue.component('icon', require('vue-awesome/components/Icon'))
